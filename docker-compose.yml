@@ -1,0 +1,34 @@
+services:
+  app:
+    build: .
+    container_name: app-node
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=fullcycle
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: app-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fullcycle
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  nginx:
+    build: ./nginx
+    container_name: app-nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+
+volumes:
+  mysql_data:
