@@ -10,7 +10,8 @@ services:
       - DB_PASSWORD=root
       - DB_NAME=fullcycle
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     image: mysql:8.0
@@ -23,6 +24,11 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
 
   nginx:
     image: gabebruno/nginx-fullcycle:latest
