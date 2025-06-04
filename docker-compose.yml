@@ -1,6 +1,6 @@
 services:
   app:
-    image: gabebruno/nodejs-fullcycle:latest
+    build: app/
     container_name: app-node
     ports:
       - "3000:3000"
@@ -9,12 +9,16 @@ services:
       - DB_USER=root
       - DB_PASSWORD=root
       - DB_NAME=fullcycle
+    volumes:
+      - ./app:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       db:
         condition: service_healthy
 
   db:
     image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
     container_name: app-mysql
     restart: always
     environment:
