@@ -24,7 +24,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: fullcycle
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - ./mysql_data:/var/lib/mysql
     healthcheck:
@@ -34,10 +34,12 @@ services:
       retries: 3
 
   nginx:
-    image: gabebruno/nginx-fullcycle:latest
+    image: nginx:latest
     container_name: app-nginx
     ports:
       - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - app
 

@@ -19,7 +19,7 @@ connection.query(
 );
 
 app.get('/', (req, res) => {
-  const name = faker.name.findName();
+  const name = faker.name.fullName();
   connection.query(`INSERT INTO people(name) VALUES(?)`, [name], (err) => {
     if (err) throw err;
 
